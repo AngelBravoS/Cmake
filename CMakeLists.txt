@@ -6,19 +6,13 @@ project(cmake)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Para evitar extensiones específicas del compilador
-set(CMAKE_CXX_COMPILER "clang++") # Alt "g++" GCC
-set(CMAKE_AR "llvm-ar")
-set(CMAKE_RANLIB "llvm-ranlib")
+#set(CMAKE_CXX_COMPILER "clang++") # Alt "g++" GCC
+#set(CMAKE_AR "llvm-ar")
+#set(CMAKE_RANLIB "llvm-ranlib")
 
 # Configuración de compilación (Debug/Release)
 #set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build: Debug or Release")
 set(CMAKE_BUILD_TYPE Debug)
-
-# Establecer las banderas de compilación
-add_compile_options(
-  "$<$<CONFIG:Debug>:-march=native;-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-ggdb3;-DDEBUG>"
-  "$<$<CONFIG:Release>:-march=native;-pedantic;-Wall;-O3>"
-)
 
 # Configuración específica del compilador
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")

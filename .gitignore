@@ -1,3 +1,4 @@
-
 .kdev4/Cmake.kdev4
 /build
+/.vs
+/out
