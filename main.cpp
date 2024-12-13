@@ -10,6 +10,8 @@ int main() {
    std::cout << "GCC " << __GNUC__ << "." << __VERSION__ << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << "\n";
 #elif defined(_MSC_VER)
    std::cout << "MSVC " << _MSC_VER << "\n";
+#elif defined(__INTEL_COMPILER)
+   std::cout << "Intel " << __INTEL_COMPILER << "." << __INTEL_LLVM_COMPILER << \n";
 #else
    std::cout << "Desconocido\n";
 #endif

@@ -6,7 +6,8 @@ project(cmake)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Para evitar extensiones específicas del compilador
-#set(CMAKE_CXX_COMPILER "clang++") # Alt "g++" GCC
+set(CMAKE_CXX_COMPILER "cl") # clang++/g++/icx/cl
+#set(CMAKE_CXX_COMPILER_ID "")
 #set(CMAKE_AR "llvm-ar")
 #set(CMAKE_RANLIB "llvm-ranlib")
 
@@ -15,38 +16,43 @@ set(CMAKE_CXX_EXTENSIONS OFF) # Para evitar extensiones específicas del compila
 set(CMAKE_BUILD_TYPE Debug)
 
 # Configuración específica del compilador
-if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    message(STATUS "Configurando para Clang")
+if (CMAKE_CXX_COMPILER STREQUAL "Clang")
+    add_compile_options(
+        "$<$<CONFIG:Debug>:-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-DDEBUG>"
+        "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
+    )
+elseif (CMAKE_CXX_COMPILER STREQUAL "GNU")
     add_compile_options(
         "$<$<CONFIG:Debug>:-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-ggdb3;-DDEBUG>"
         "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
     )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    message(STATUS "Configurando para GCC")
-    add_compile_options(
-        "$<$<CONFIG:Debug>:-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-ggdb3;-DDEBUG>"
-        "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
-    )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    message(STATUS "Configurando para MSVC")
+
+elseif (CMAKE_CXX_COMPILER STREQUAL "cl")
     add_compile_options(
         "$<$<CONFIG:Debug>:/W4;/DDEBUG;/Od;/Zi>" # /W4: Nivel de advertencias alto, /Od: Sin optimización, /Zi: Depuración
         "$<$<CONFIG:Release>:/O2;/W3>"          # /O2: Optimización, /W3: Advertencias moderadas
-    )
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-    message(STATUS "Configurando para Intel Compiler")
+   )
+elseif (CMAKE_CXX_COMPILER STREQUAL "icx")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(STATUS "Configurando para Intel Compiler icx en modo MSVC")
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        message(STATUS "Configurando para Intel Compiler icx en modo Clang")
+    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "icx")
+        message(STATUS "Configurando para Intel Compiler icx en modo icx")
+    endif()
     add_compile_options(
-        "$<$<CONFIG:Debug>:-Wall;-Wextra;-g;-O0;-debug>"
-        "$<$<CONFIG:Release>:-O3;-ipo;-xHost>"
+        "$<$<CONFIG:Debug>:-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-DDEBUG>"
+        "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
     )
 else()
     message(WARNING "Compilador no soportado. No se aplican banderas específicas.")
 endif()
 
 # Verificar compilador activo
-message(STATUS "Compilador detectado: ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS "Compilador ejecutable: ${CMAKE_CXX_COMPILER}")
 
+message(STATUS "CMAKE_CXX_COMPILER: ${CMAKE_CXX_COMPILER}")
+message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
 
 # Configuración del ejecutable
 add_executable(cmake main.cpp)
