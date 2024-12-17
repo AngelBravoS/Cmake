@@ -7,11 +7,11 @@ int main() {
 #if defined(__clang__)
    std::cout << "Clang " << __clang_major__ << "." << __clang_minor__ << "." << __clang_patchlevel__ << "\n";
 #elif defined(__GNUC__)
-   std::cout << "GCC " << __GNUC__ << "." << __VERSION__ << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << "\n";
+   std::cout << "GCC " << __GNUC__ << "." << __GNUC_MINOR__ << "." << __GNUC_PATCHLEVEL__ << "\n";
 #elif defined(_MSC_VER)
    std::cout << "MSVC " << _MSC_VER << "\n";
 #elif defined(__INTEL_COMPILER)
-   std::cout << "Intel " << __INTEL_COMPILER << "." << __INTEL_LLVM_COMPILER << \n";
+   std::cout << "Intel " << __INTEL_COMPILER << "." << __INTEL_LLVM_COMPILER << "\n";
 #else
    std::cout << "Desconocido\n";
 #endif
@@ -30,8 +30,6 @@ int main() {
    std::cout << "macOS\n";
 #elif defined(__linux__)
    std::cout << "Linux\n";
-
-
 #else
    std::cout << "Sistema operativo desconocido\n";
 #endif

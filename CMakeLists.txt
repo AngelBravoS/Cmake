@@ -6,7 +6,7 @@ project(cmake)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Para evitar extensiones específicas del compilador
-set(CMAKE_CXX_COMPILER "cl") # clang++/g++/icx/cl
+set(CMAKE_CXX_COMPILER "clang++") # clang++/g++/icx/cl
 #set(CMAKE_CXX_COMPILER_ID "")
 #set(CMAKE_AR "llvm-ar")
 #set(CMAKE_RANLIB "llvm-ranlib")
@@ -16,12 +16,12 @@ set(CMAKE_CXX_COMPILER "cl") # clang++/g++/icx/cl
 set(CMAKE_BUILD_TYPE Debug)
 
 # Configuración específica del compilador
-if (CMAKE_CXX_COMPILER STREQUAL "Clang")
+if (CMAKE_CXX_COMPILER STREQUAL "clang++")
     add_compile_options(
-        "$<$<CONFIG:Debug>:-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-DDEBUG>"
+        "$<$<CONFIG:Debug>:-Wpedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-DDEBUG>"
         "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
     )
-elseif (CMAKE_CXX_COMPILER STREQUAL "GNU")
+elseif (CMAKE_CXX_COMPILER STREQUAL "g++")
     add_compile_options(
         "$<$<CONFIG:Debug>:-pedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-O0;-ggdb3;-DDEBUG>"
         "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
@@ -41,7 +41,7 @@ elseif (CMAKE_CXX_COMPILER STREQUAL "icx")
         message(STATUS "Configurando para Intel Compiler icx en modo icx")
     endif()
     add_compile_options(
-        "$<$<CONFIG:Debug>:-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-DDEBUG>"
+        "$<$<CONFIG:Debug>:-Wpedantic;-Wall;-Wextra;-Wconversion;-Wshadow;-Wcast-qual;-Wwrite-strings;-DDEBUG>"
         "$<$<CONFIG:Release>:-pedantic;-Wall;-O3>"
     )
 else()
@@ -55,7 +55,10 @@ message(STATUS "CMAKE_CXX_COMPILER_ID: ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "CMAKE_CXX_COMPILER_VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
 
 # Configuración del ejecutable
-add_executable(cmake main.cpp)
+add_executable(cmake src/main.cpp)
+
+# Directorios de encabezados
+target_include_directories(cmake PRIVATE ${PROJECT_SOURCE_DIR}/include)
 
 # Directorio de salida
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
