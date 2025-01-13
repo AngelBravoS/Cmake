@@ -3,10 +3,10 @@ cmake_minimum_required(VERSION 3.6)
 project(cmake)
 
 # Especificación de C++ estándar
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF) # Para evitar extensiones específicas del compilador
-set(CMAKE_CXX_COMPILER "clang++") # clang++/g++/icx/cl
+set(CMAKE_CXX_COMPILER "cl") # clang++/g++/icx/cl
 #set(CMAKE_CXX_COMPILER_ID "")
 #set(CMAKE_AR "llvm-ar")
 #set(CMAKE_RANLIB "llvm-ranlib")
@@ -29,7 +29,7 @@ elseif (CMAKE_CXX_COMPILER STREQUAL "g++")
 
 elseif (CMAKE_CXX_COMPILER STREQUAL "cl")
     add_compile_options(
-        "$<$<CONFIG:Debug>:/W4;/DDEBUG;/Od;/Zi>" # /W4: Nivel de advertencias alto, /Od: Sin optimización, /Zi: Depuración
+        "$<$<CONFIG:Debug>:/MDd;/RTC1;/permissive;/W3;/Wall;/DDEBUG;/Od;/Ob0;/Zi;/utf-8;/MP;/wd4820;/wd5045;/wd4668>"
         "$<$<CONFIG:Release>:/O2;/W3>"          # /O2: Optimización, /W3: Advertencias moderadas
    )
 elseif (CMAKE_CXX_COMPILER STREQUAL "icx")
